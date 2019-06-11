@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 
@@ -64,7 +65,6 @@ func DeletePerson(w http.ResponseWriter, r *http.Request) {
 
 // main function to boot up everything
 func main() {
-
 	router := mux.NewRouter()
 	people = append(people, Person{ID: "1", Firstname: "John", Lastname: "Doe", Address: &Address{City: "City X", State: "State X"}})
 	people = append(people, Person{ID: "2", Firstname: "Koko", Lastname: "Doe", Address: &Address{City: "City Z", State: "State Y"}})
@@ -74,5 +74,6 @@ func main() {
 	router.HandleFunc("/people/{id}", CreatePerson).Methods("POST")
 	router.HandleFunc("/people/{id}", DeletePerson).Methods("DELETE")
 	loggedRouter := handlers.LoggingHandler(os.Stdout, router)
+	fmt.Println("INFO: App is running")
 	http.ListenAndServe(":8000", loggedRouter)
 }
